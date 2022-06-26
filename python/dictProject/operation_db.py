@@ -11,11 +11,11 @@ class Database:
 
     def __init__(self,
                  host='192.168.200.139',
-                 port='3306',
+                 port=3306,
                  user='pc',
                  passwd='123123',
                  database='dict',
-                 charset='utf8') -> None:
+                 charset='utf8') :
         self.host = host
         self.port = port
         self.user = user
@@ -27,8 +27,12 @@ class Database:
     def connect_db(self):
         """连接MySQL
         """
-        self.db = pymysql.connect(self.host, self.port, self.user, self.passwd,
-                                  self.database, self.charset)
+        self.db = pymysql.connect(host=self.host,
+                                  port=self.port,
+                                  user=self.user,
+                                  passwd=self.passwd,
+                                  database=self.database,
+                                  charset=self.charset)
 
     def create_cursor(self):
         """创建游标
