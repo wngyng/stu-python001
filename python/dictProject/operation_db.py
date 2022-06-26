@@ -1,10 +1,12 @@
-"""dict 项目用于处理数据
+"""
+dict 项目用于处理数据
 """
 import pymysql
 
 
 class Database:
-    """ 编写一个功能类，提供给服务端使用
+    """ 
+    编写一个功能类，提供给服务端使用
     """
 
     def __init__(self,
