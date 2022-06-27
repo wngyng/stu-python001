@@ -42,13 +42,39 @@ def main():
         p.start()
 
 
+def do_register(c: socket, db: Database, data: str):
+    """
+    处理用户数据库注册用户
+    Args:
+        c (socket): 套接字
+        db (Database): 数据库
+        data (str): 数据库数据
+    """
+    tmp = data.split(' ')  #空格分割
+    name = tmp[1]
+    passwd = tmp[2]
+    if db.register(name, passwd):
+        c.send(b'OK')
+    else:
+        c.send(b'FAIL')
+
+
 def do_request(c: socket, db: Database):
     """
-    处理客户端请求
+    接收并处理客户端请求
     """
     while True:
         data = c.recv(1024).decode()
-        print(data)
+        print(c.getpeername(), ':', data)
+        if data[0] == 'R':
+            db.create_cursor()  #创建游标db.cur
+            do_register(c, db, data)
+        if data[0] == 'L':
+            do_login(c, db, data)
+
+
+def do_login(c: socket, db: Database, data):
+    pass
 
 
 if __name__ == '__main__':

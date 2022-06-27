@@ -46,7 +46,7 @@ class Login:
     def register(self, name, passwd):
         sql = "select * from %s where name ='%s'" % (self.table, name)
         self.cur.execute(sql)
-        if self.cur.fetchone():
+        if self.cur.fetchone():  #是否能调出数据
             return False
         sql = "insert into %s(name,passwd) \
                 values('%s','%s')" % (self.table, name, passwd)
