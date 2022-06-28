@@ -8,12 +8,8 @@ import hashlib
 class Database:
     """编写一个功能类，提供给服务端使用
     Args:
-    host='192.168.200.139',
-                 port=3306,
-                 user='pc',
-                 passwd='123123',
-                 database='dict',
-                 charset='utf8') :   
+    host='192.168.200.139',port=3306,user='pc',passwd='123123',
+                 database='dict',charset='utf8') :   
     """
 
     def __init__(self,
@@ -64,7 +60,6 @@ class Database:
         if r:
             return False
         #加密处理
-
         hash = hashlib.md5((name + "the-sat").encode())
         hash.update(passwd.encode())
         sql = "insert into user (name,passwd) values(%s,%s)"
@@ -74,4 +69,24 @@ class Database:
             return True
         except Exception as e:
             self.db.rollback()
+            return False
+
+    def login(self, name: str, passwd: str):
+        """login MySQL 登录验证
+
+        Args:
+            name (str): _description_
+            passwd (str): _description_
+
+        Returns:
+            布尔值: _description_
+        """
+        sql = "select * from user where name =%s and passwd =%s"
+        hash = hashlib.md5((name + "the-sat").encode())
+        hash.update(passwd.encode())
+        self.cur.execute(sql, [name, hash.hexdigest()])
+        r = self.cur.fetchone()
+        if r:
+            return True
+        else:
             return False

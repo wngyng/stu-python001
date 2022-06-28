@@ -7,6 +7,7 @@ lock = RLock()
 
 
 class MyThread(Thread):
+
     def fun1(self):
         global num
         with lock:  # 上锁

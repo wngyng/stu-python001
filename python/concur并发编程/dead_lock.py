@@ -1,6 +1,9 @@
 import threading
 import time
+
+
 class Account:
+
     def __init__(self, _id, balance, lock):
         self.id = _id  # 用户
         self.balance = balance  # 存款
@@ -14,6 +17,8 @@ class Account:
 
     def get_balance(self):  # 查看账户金额
         return self.balance
+
+
 # 转账函数
 def transfer0(from_, to, amount):
     if from_.lock.acquire():  # 锁住自己的账户
@@ -24,6 +29,8 @@ def transfer0(from_, to, amount):
             to.lock.release()  # 对方账户解锁
         from_.lock.release()  # 自己账户解锁
     print("转账完成")
+
+
 # 创建两个账户
 Abby = Account('Abby', 5000, threading.Lock())
 Levi = Account('Levi', 3000, threading.Lock())

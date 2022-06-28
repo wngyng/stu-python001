@@ -66,6 +66,10 @@ def do_request(c: socket, db: Database):
     while True:
         data = c.recv(1024).decode()
         print(c.getpeername(), ':', data)
+        if not data or data[0] == 'E':  #无数据或返回E，退出
+            db.close()
+            c.close()
+            sys.exit("客户端退出")
         if data[0] == 'R':
             db.create_cursor()  #创建游标db.cur
             do_register(c, db, data)
@@ -73,8 +77,21 @@ def do_request(c: socket, db: Database):
             do_login(c, db, data)
 
 
-def do_login(c: socket, db: Database, data):
-    pass
+def do_login(c: socket, db: Database, data: str):
+    """do_login 处理登录
+
+    Args:
+        c (socket): _description_
+        db (Database): _description_
+        data (str): L name passwd
+    """
+    tmp = data.split(' ')
+    name = tmp[1]
+    passwd = tmp[2]
+    if db.login(name, passwd):
+        c.send(b'OK')
+    else:
+        c.send(b'FAIL')
 
 
 if __name__ == '__main__':

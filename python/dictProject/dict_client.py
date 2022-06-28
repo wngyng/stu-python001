@@ -87,7 +87,9 @@ def main():
         elif cmd == '2':
             do_login()
         elif cmd == '3':
-            pass
+            s.send(b'E')
+            print("谢谢使用！")
+            return
         else:
             print("请输入正确命令！")
 
