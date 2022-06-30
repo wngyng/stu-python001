@@ -13,9 +13,9 @@ s.connect(ADDR)
 def do_register():
     """注册
     """
-    while True:  #输入密码错误循环
+    while True:  # 输入密码错误循环
         name = input("User:")
-        passwd = getpass("请输入密码")  #调用密码隐藏函数
+        passwd = getpass("请输入密码")  # 调用密码隐藏函数
         passwd1 = getpass("重复输入密码：")
         if (' ' in name) or (' ' in passwd):
             print("用户名或密码不能有空格")
@@ -24,9 +24,9 @@ def do_register():
             print("两次密码不一致")
             continue
         msg = "R %s %s" % (name, passwd)
-        #发送请求
+        # 发送请求
         s.send(msg.encode())
-        #接收反馈
+        # 接收反馈
         data = s.recv(128).decode()
         if data == 'OK':
             print("注册成功！")
@@ -42,7 +42,7 @@ def do_login():
     passwd = getpass()
     msg = "L %s %s" % (name, passwd)
     s.send(msg.encode())
-    #等待反馈
+    # 等待反馈
     data = s.recv(128).decode()
     if data == 'OK':
         print("登录成功！")
@@ -62,14 +62,49 @@ def login(name):
         """)
         cmd = input("输入选项：")
         if cmd == '1':
-            pass
+            do_query(name)
         elif cmd == '2':
-            pass
+            do_hist(name)
         elif cmd == '3':
             return
         else:
             print("请输入正确命令！")
 
+
+def do_query(name: str):
+    """查单词
+
+    Args:
+        name (str): _description_
+    """
+    while True:
+        word = input("单词：")
+        if word == '##':  # 结束单词查询
+            break
+        msg = "Q %s %s" % (name, word)
+        s.send(msg.encode())
+        # 等待回复
+        data = s.recv(1024).decode()
+        print(data)
+
+
+def do_hist(name: str):
+    """查询历史记录
+
+    Args:
+        name (str): _description_
+    """
+    msg = "H %s" % name
+    s.send(msg.encode())
+    data = s.recv(1024).decode()
+    if data == 'OK':
+        while True:
+            data = s.recv(1024).decode()
+            if data == '##':
+                break
+            print(data)
+    else:
+        print("还没有历史记录！")
 
 
 def main():
@@ -83,7 +118,7 @@ def main():
         """)
         cmd = input("输入选项：")
         if cmd == '1':
-            do_register()  #调用
+            do_register()  # 调用
         elif cmd == '2':
             do_login()
         elif cmd == '3':
