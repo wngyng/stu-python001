@@ -5,14 +5,12 @@ import pymysql
 import hashlib
 import time
 
-
 class Database:
     """编写一个功能类，提供给服务端使用
     Args:
     host='192.168.200.139',port=3306,user='pc',passwd='123123',
                  database='dict',charset='utf8') :   
     """
-
     def __init__(self, host='192.168.200.139',
                  port=3306, user='pc',
                  passwd='123123', database='dict',
@@ -28,15 +26,11 @@ class Database:
     def connect_db(self):
         """连接MySQL
         """
-        self.db = pymysql.connect(host=self.host,
-                                  port=self.port,
-                                  user=self.user,
-                                  passwd=self.passwd,
-                                  database=self.database,
-                                  charset=self.charset)
+        self.db = pymysql.connect(host=self.host,port=self.port,
+                                  user=self.user,passwd=self.passwd,
+                                  database=self.database,charset=self.charset)
 
-    def create_cursor(self):
-        # 创建游标
+    def create_cursor(self):# 创建游标        
         self.cur = self.db.cursor()
 
     def close(self):

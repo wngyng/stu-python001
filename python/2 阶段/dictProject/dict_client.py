@@ -4,15 +4,12 @@ dict 客户端
 """
 from getpass import getpass
 from socket import *
-
 ADDR = ('192.168.200.135', 8000)
 s = socket()
 s.connect(ADDR)
 
 
-def do_register():
-    """注册
-    """
+def do_register():  # 注册
     while True:  # 输入密码错误循环
         name = input("User:")
         passwd = getpass("请输入密码")  # 调用密码隐藏函数
@@ -35,9 +32,7 @@ def do_register():
         return
 
 
-def do_login():
-    """do_login 登录处理
-    """
+def do_login():  # do_login 登录处理
     name = input("User:")
     passwd = getpass()
     msg = "L %s %s" % (name, passwd)
@@ -51,9 +46,7 @@ def do_login():
         print("登录失败！")
 
 
-def login(name):
-    """login 二级界面
-    """
+def login(name):  # login 二级界面
     while True:
         print("""
         ================Query=================
@@ -83,8 +76,7 @@ def do_query(name: str):
             break
         msg = "Q %s %s" % (name, word)
         s.send(msg.encode())
-        # 等待回复
-        data = s.recv(1024).decode()
+        data = s.recv(1024).decode()  # 等待回复
         print(data)
 
 
